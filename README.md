@@ -5,7 +5,7 @@ A robust, enterprise-grade Fastify-based API service for generating insurance qu
 ## Features
 
 - High-performance, lightweight API built with Fastify framework
-- RESTful endpoint architecture for generating insurance quotes
+- RESTful endpoint architecture for generating financial quotes
 - Seamless integration with the proprietary Swallow Pricing Engine
 - Support for multiple project-specific pricing models through configuration
 - Comprehensive Swagger documentation for API reference
@@ -76,7 +76,7 @@ http://localhost:3000/docs
 POST /quote/{project_id}
 ```
 
-Generates an insurance quote for a specific pricing project.
+Generates an financial quote for a specific pricing project.
 
 #### Path Parameters
 
