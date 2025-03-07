@@ -1,6 +1,6 @@
 # Swallow Pricing API
 
-A robust, enterprise-grade Fastify-based API service for generating insurance quotes using the proprietary Swallow Pricing Engine.
+A robust, enterprise-grade Fastify-based API service for generating insurance quotes using the proprietary Swallow Pricing Engine. Access to the package for the Swallow pricing engine is granted upon request. This application **will not price** without having permission install to this package.
 
 ## Features
 
@@ -155,9 +155,9 @@ axios.post('http://localhost:3000/quote/3fa85f64-5717-4562-b3fc-2c963f66afa6', {
 
 ## Project Files
 
-Project configuration files are stored in the `src/models/` directory as JSON files. Each file contains a specific pricing model configuration that is referenced by a UUID. 
+Swallow project configuration files are stored in the `src/models/` directory as JSON files. Each file contains a specific pricing model configuration that is referenced by a UUID. 
 
-Projects are mapped to their configuration files internally within the service, with each unique project identified by a UUID that is used in API endpoints (e.g., `/quote/3fa85f64-5717-4562-b3fc-2c963f66afa6`).
+Projects are mapped to their configuration files internally within the service, with each unique project identified by a UUID that is used in API endpoints (e.g., `/quote/3fa85f64-5717-4562-b3fc-2c963f66afa6`). You can have as many models stored flat-file as you like.
 
 ## Environment Variables
 
