@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { engine } from '@swa_llow/pricing_engine';
+import { engine } from '@swa_llow/pricing_engine';  // This is file is protected. Access can be granted on request.
 import fs from 'fs/promises';
 import path from 'path';
 import { QuoteInput } from '../types';
