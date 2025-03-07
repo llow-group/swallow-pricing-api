@@ -23,10 +23,19 @@ export const getQuote = async (
 
     // Call the pricing engine
     const result = await engine({
-      project,
-      quote: quoteInput,
-      debug: true,
+      project, // This is the Swallow project config
+      quote: quoteInput, // This is the supplied payload
+      debug: true, // This will return verbose log responses
     });
+
+    /*
+    -- response --
+    {
+      result: 100.00,
+      valid: true,
+      debug: {...}
+    }
+    */
 
     return reply.code(200).send({
       result: result.result,
