@@ -12,7 +12,7 @@ export interface PersistedQuote extends QuoteOutput {
 
 /**
  * Persist a quote to disk if the PERSIST_QUOTES environment variable is set to 'true'
- * 
+ *
  * @param projectId The project ID
  * @param quoteInput The quote input parameters
  * @param quoteOutput The quote output result
@@ -29,25 +29,34 @@ export const persistQuote = async (
   }
 
   try {
-    const quotesDir = path.join(process.cwd(), 'data', 'quotes');
-    
-    // Create quotes directory if it doesn't exist
-    await fs.mkdir(quotesDir, { recursive: true });
-    
+    const baseQuotesDir = path.join(process.cwd(), 'data', 'quotes');
+
+    // Create quotes base directory if it doesn't exist
+    await fs.mkdir(baseQuotesDir, { recursive: true });
+
+    // Generate date-based folder structure (YYYY-MM-DD)
+    const now = new Date();
+    const dateFolder = now.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+    const quotesDateDir = path.join(baseQuotesDir, dateFolder);
+
+    // Create date-specific directory if it doesn't exist
+    await fs.mkdir(quotesDateDir, { recursive: true });
+
     // Generate UUID for the quote
     const quoteId = uuidv4();
-    
+
     const persistedQuote: PersistedQuote = {
       id: quoteId,
       projectId,
       input: quoteInput,
       ...quoteOutput,
-      timestamp: new Date().toISOString()
+      timestamp: now.toISOString(),
     };
-    
-    // Write quote to disk
+
+    // Write quote to disk in the date-based folder
     await fs.writeFile(
-      path.join(quotesDir, `${quoteId}.json`),
+      path.join(quotesDateDir, `${quoteId}.json`),
       JSON.stringify(persistedQuote, null, 2),
       'utf-8'
     );

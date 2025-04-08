@@ -172,11 +172,12 @@ The application uses the following data directory structure:
 
 ```
 data/
-├── models/         # Pricing project configuration files
+├── models/                # Pricing project configuration files
 │   ├── pet-insurance.json
 │   └── bikeInsurance.json
-└── quotes/         # Generated quotes (when PERSIST_QUOTES=true)
-    └── [uuid].json # Quote files with UUID filenames
+└── quotes/               # Generated quotes (when PERSIST_QUOTES=true)
+    └── YYYY-MM-DD/       # Date-based folders (e.g., 2025-04-08/)
+        └── [uuid].json   # Quote files with UUID filenames
 ```
 
 ### Project Models
@@ -192,7 +193,7 @@ When the `PERSIST_QUOTES` environment variable is set to 'true', all generated q
 - Quote history and analytics
 - Debugging and troubleshooting
 
-Quotes are stored in the `data/quotes/` directory with unique UUIDs as filenames. Each quote file contains:
+Quotes are stored in date-based folders within the `data/quotes/` directory (e.g., `data/quotes/2025-04-08/`) with unique UUIDs as filenames. Each quote file contains:
 
 ```json
 {

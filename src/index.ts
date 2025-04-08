@@ -27,34 +27,35 @@ server.register(swagger, {
   openapi: {
     info: {
       title: 'Swallow Pricing API',
-      description: 'API for generating insurance quotes using the proprietary Swallow Pricing Engine',
+      description:
+        'API for generating insurance quotes using the proprietary Swallow Pricing Engine',
       version: '1.0.0',
       contact: {
         name: 'Swallow API Support',
-        email: 'support@example.com'
+        email: 'support@example.com',
       },
       license: {
         name: 'Proprietary',
-        url: 'https://example.com/license'
-      }
+        url: 'https://example.com/license',
+      },
     },
     externalDocs: {
       description: 'Find more info here',
-      url: 'https://example.com/docs'
+      url: 'https://example.com/docs',
     },
     servers: [
       {
         url: 'http://localhost:3000',
-        description: 'Development server'
-      }
+        description: 'Development server',
+      },
     ],
     components: {
       securitySchemes: {
         apiKey: {
           type: 'apiKey',
           name: 'apiKey',
-          in: 'header'
-        }
+          in: 'header',
+        },
       },
       examples: {
         quoteRequest: {
@@ -68,38 +69,38 @@ server.register(swagger, {
             animal_neutered: true,
             base: 1000,
             commission_rate: 0.15,
-            tax_rate: 0.125
-          }
+            tax_rate: 0.125,
+          },
         },
         quoteResponse: {
           value: {
             result: 3500,
-            valid: true
-          }
+            valid: true,
+          },
         },
         errorResponse: {
           value: {
             error: 'Project not found',
-            message: 'No project found with ID: pet_insurance'
-          }
-        }
-      }
+            message: 'No project found with ID: pet_insurance',
+          },
+        },
+      },
     },
     tags: [
       { name: 'quotes', description: 'Quote generation endpoints' },
-      { name: 'health', description: 'Health check endpoints' }
-    ]
-  }
+      { name: 'health', description: 'Health check endpoints' },
+    ],
+  },
 });
 
 server.register(swaggerUi, {
   routePrefix: '/docs',
   uiConfig: {
     docExpansion: 'list',
-    deepLinking: true
+    deepLinking: true,
   },
   staticCSP: true,
-  transformSpecificationClone: false
+  transformSpecificationClone: false,
 });
 
 // Define routes
@@ -111,16 +112,17 @@ server.post<{
   {
     schema: {
       tags: ['quotes'],
-      description: 'Generate an insurance quote based on the provided parameters and pricing project',
+      description:
+        'Generate an insurance quote based on the provided parameters and pricing project',
       summary: 'Generate insurance quote',
       operationId: 'generateQuote',
       params: {
         type: 'object',
         required: ['project_id'],
         properties: {
-          project_id: { 
+          project_id: {
             type: 'string',
-            description: 'ID of the pricing project to use (corresponds to a JSON file in models/)'
+            description: 'ID of the pricing project to use (corresponds to a JSON file in models/)',
           },
         },
       },
@@ -136,52 +138,52 @@ server.post<{
           'animal_neutered',
         ],
         properties: {
-          base: { 
+          base: {
             type: 'number',
-            description: 'Base premium amount'
+            description: 'Base premium amount',
           },
-          proposer_name: { 
+          proposer_name: {
             type: 'string',
-            description: 'Full name of the insurance proposer'
+            description: 'Full name of the insurance proposer',
           },
-          proposer_email: { 
-            type: 'string', 
+          proposer_email: {
+            type: 'string',
             format: 'email',
-            description: 'Email address of the proposer'
+            description: 'Email address of the proposer',
           },
-          proposer_postcode: { 
+          proposer_postcode: {
             type: 'string',
-            description: 'Postal code of the proposer'
+            description: 'Postal code of the proposer',
           },
-          commission_rate: { 
+          commission_rate: {
             type: 'number',
             description: 'Commission rate as a decimal (e.g., 0.15 for 15%)',
             minimum: 0,
-            maximum: 1
+            maximum: 1,
           },
-          tax_rate: { 
+          tax_rate: {
             type: 'number',
             description: 'Tax rate as a decimal (e.g., 0.125 for 12.5%)',
             minimum: 0,
-            maximum: 1
+            maximum: 1,
           },
-          animal_species: { 
+          animal_species: {
             type: 'string',
             description: 'Species of the animal to be insured',
-            enum: ['Cat', 'Dog', 'Rabbit', 'Horse', 'Bird']
+            enum: ['Cat', 'Dog', 'Rabbit', 'Horse', 'Bird'],
           },
-          animal_breed: { 
+          animal_breed: {
             type: 'string',
-            description: 'Breed of the animal'
+            description: 'Breed of the animal',
           },
-          animal_age: { 
-            type: 'integer', 
+          animal_age: {
+            type: 'integer',
             minimum: 0,
-            description: 'Age of the animal in years'
+            description: 'Age of the animal in years',
           },
-          animal_neutered: { 
+          animal_neutered: {
             type: 'boolean',
-            description: 'Whether the animal has been neutered'
+            description: 'Whether the animal has been neutered',
           },
         },
       },
@@ -190,13 +192,13 @@ server.post<{
           description: 'Successful quote generation',
           type: 'object',
           properties: {
-            result: { 
+            result: {
               type: 'number',
-              description: 'The calculated premium amount'
+              description: 'The calculated premium amount',
             },
-            valid: { 
+            valid: {
               type: 'boolean',
-              description: 'Whether the quote is valid according to business rules'
+              description: 'Whether the quote is valid according to business rules',
             },
           },
         },
@@ -231,44 +233,48 @@ server.post<{
 );
 
 // Health check endpoint
-server.get('/health', {
-  schema: {
-    tags: ['health'],
-    description: 'Health check endpoint to verify API is running',
-    summary: 'API health check',
-    operationId: 'healthCheck',
-    response: {
-      200: {
-        description: 'Successful response',
-        type: 'object',
-        properties: {
-          status: { type: 'string', enum: ['ok'] },
-          version: { type: 'string' },
-          timestamp: { type: 'string', format: 'date-time' }
-        }
-      }
-    }
+server.get(
+  '/health',
+  {
+    schema: {
+      tags: ['health'],
+      description: 'Health check endpoint to verify API is running',
+      summary: 'API health check',
+      operationId: 'healthCheck',
+      response: {
+        200: {
+          description: 'Successful response',
+          type: 'object',
+          properties: {
+            status: { type: 'string', enum: ['ok'] },
+            version: { type: 'string' },
+            timestamp: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  },
+  async (_, reply) => {
+    return reply.code(200).send({
+      status: 'ok',
+      version: '1.0.0',
+      timestamp: new Date().toISOString(),
+    });
   }
-}, async (_, reply) => {
-  return reply.code(200).send({ 
-    status: 'ok',
-    version: '1.0.0',
-    timestamp: new Date().toISOString()
-  });
-});
+);
 
 // Start server
 const start = async () => {
   try {
     const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
-    
+
     // Log feature flag status
     const persistQuotes = process.env.PERSIST_QUOTES === 'true';
     server.log.info(`Quote persistence feature: ${persistQuotes ? 'ENABLED' : 'DISABLED'}`);
     if (persistQuotes) {
-      server.log.info('Quotes will be saved to disk in data/quotes/');
+      server.log.info('Quotes will be saved to disk in data/quotes/YYYY-MM-DD/ folders');
     }
-    
+
     await server.listen({ port: PORT, host: '0.0.0.0' });
     console.log(`Server listening on ${server.server.address()}`);
   } catch (err) {
