@@ -130,6 +130,7 @@ dist
 .pnp.*
 
 # Project specific
-src/models/
+data/models/
+data/quotes/
 .DS_Store
 .idea/

@@ -2,7 +2,8 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { engine } from '@swa_llow/pricing_engine';
 import fs from 'fs/promises';
 import path from 'path';
-import { QuoteInput } from '../types';
+import { QuoteInput, QuoteOutput } from '../types';
+import { persistQuote } from '../utils/persistence';
 
 // Get a quote using the pricing engine
 export const getQuote = async (
@@ -17,7 +18,7 @@ export const getQuote = async (
     const quoteInput = request.body;
 
     // Load project from the JSON file
-    const projectPath = path.join(process.cwd(), 'src', 'models', `${project_id}.json`);
+    const projectPath = path.join(process.cwd(), 'data', 'models', `${project_id}.json`);
     const projectData = await fs.readFile(projectPath, 'utf-8');
     const project = JSON.parse(projectData);
 
@@ -28,10 +29,20 @@ export const getQuote = async (
       debug: true,
     });
 
-    return reply.code(200).send({
+    const quoteOutput: QuoteOutput = {
       result: result.result,
       valid: result.valid,
-    });
+    };
+
+    // Persist quote if the feature flag is enabled
+    try {
+      await persistQuote(project_id, quoteInput, quoteOutput);
+    } catch (persistError) {
+      // Log but don't fail the quote if persistence fails
+      console.error('Failed to persist quote:', persistError);
+    }
+
+    return reply.code(200).send(quoteOutput);
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
       return reply.code(404).send({

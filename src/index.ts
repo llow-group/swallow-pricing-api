@@ -261,6 +261,14 @@ server.get('/health', {
 const start = async () => {
   try {
     const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+    
+    // Log feature flag status
+    const persistQuotes = process.env.PERSIST_QUOTES === 'true';
+    server.log.info(`Quote persistence feature: ${persistQuotes ? 'ENABLED' : 'DISABLED'}`);
+    if (persistQuotes) {
+      server.log.info('Quotes will be saved to disk in data/quotes/');
+    }
+    
     await server.listen({ port: PORT, host: '0.0.0.0' });
     console.log(`Server listening on ${server.server.address()}`);
   } catch (err) {

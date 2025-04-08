@@ -155,7 +155,7 @@ axios.post('http://localhost:3000/quote/3fa85f64-5717-4562-b3fc-2c963f66afa6', {
 
 ## Project Files
 
-Project configuration files are stored in the `src/models/` directory as JSON files. Each file contains a specific pricing model configuration that is referenced by a UUID. 
+Project configuration files are stored in the `data/models/` directory as JSON files. Each file contains a specific pricing model configuration that is referenced by a UUID. 
 
 Projects are mapped to their configuration files internally within the service, with each unique project identified by a UUID that is used in API endpoints (e.g., `/quote/3fa85f64-5717-4562-b3fc-2c963f66afa6`).
 
@@ -164,3 +164,60 @@ Projects are mapped to their configuration files internally within the service, 
 - `PORT`: The port to run the server on (default: 3000)
 - `NODE_ENV`: Environment mode (development, production, test)
 - `LOG_LEVEL`: Logging verbosity level (default: info)
+- `PERSIST_QUOTES`: When set to 'true', enables quote persistence to disk (default: false)
+
+## Data Directory Structure
+
+The application uses the following data directory structure:
+
+```
+data/
+├── models/         # Pricing project configuration files
+│   ├── pet-insurance.json
+│   └── bikeInsurance.json
+└── quotes/         # Generated quotes (when PERSIST_QUOTES=true)
+    └── [uuid].json # Quote files with UUID filenames
+```
+
+### Project Models
+
+Project configuration files are stored in the `data/models/` directory as JSON files. Each file contains 
+a specific pricing model configuration that is referenced by a project ID in the filename.
+
+### Quote Persistence
+
+When the `PERSIST_QUOTES` environment variable is set to 'true', all generated quotes will be saved to disk in JSON format. This feature is useful for:
+
+- Audit trails and compliance requirements
+- Quote history and analytics
+- Debugging and troubleshooting
+
+Quotes are stored in the `data/quotes/` directory with unique UUIDs as filenames. Each quote file contains:
+
+```json
+{
+  "id": "uuid-of-quote",
+  "projectId": "project-id-used",
+  "input": {
+    // Complete quote request parameters
+  },
+  "result": 1234.56,
+  "valid": true,
+  "timestamp": "2025-04-08T00:00:00.000Z"
+}
+```
+
+To enable quote persistence:
+
+```bash
+# In development
+PERSIST_QUOTES=true npm run dev
+
+# In production
+PERSIST_QUOTES=true npm start
+
+# Using Docker
+docker run -p 3000:3000 \
+  -e PERSIST_QUOTES=true \
+  swallow-pricing-api
+```
