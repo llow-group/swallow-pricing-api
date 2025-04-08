@@ -1,6 +1,6 @@
 # Swallow Pricing API
 
-A robust, enterprise-grade Fastify-based API service for generating insurance quotes using the proprietary Swallow Pricing Engine. Access to the package for the Swallow pricing engine is granted upon request. This application **will not price** without having permission install to this package.
+A robust, enterprise-grade Fastify-based API service for generating financial quotes using the proprietary Swallow Pricing Engine. Access to the package for the Swallow pricing engine is granted upon request. This application **will not price** without having permission install to this package.
 
 ## Features
 

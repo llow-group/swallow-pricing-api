@@ -28,7 +28,7 @@ server.register(swagger, {
     info: {
       title: 'Swallow Pricing API',
       description:
-        'API for generating insurance quotes using the proprietary Swallow Pricing Engine',
+        'API for generating financial quotes using the proprietary Swallow Pricing Engine',
       version: '1.0.0',
       contact: {
         name: 'Swallow API Support',
