@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { engine } from '@swa_llow/pricing_engine';
+import { engine } from '@swa_llow/pricing_engine';  // This is file is protected. Access can be granted on request.
 import fs from 'fs/promises';
 import path from 'path';
 import { QuoteInput, QuoteOutput } from '../types';
@@ -24,11 +24,20 @@ export const getQuote = async (
 
     // Call the pricing engine
     const result = await engine({
-      project,
-      quote: quoteInput,
-      debug: true,
+      project, // This is the Swallow project config
+      quote: quoteInput, // This is the supplied payload
+      debug: true, // This will return verbose log responses
     });
 
+    /*
+    -- response --
+    {
+      result: 100.00,
+      valid: true,
+      debug: {...}
+    }
+    */
+    
     const quoteOutput: QuoteOutput = {
       result: result.result,
       valid: result.valid,
